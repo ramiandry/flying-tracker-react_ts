@@ -3,7 +3,7 @@ import './Loader.css'; // Assurez-vous d'avoir un fichier CSS pour les styles
 
 const Loader = () => {
   useEffect(() => {
-    const pointsContainer = document.querySelector(".points");
+    const pointsContainer = document.querySelector(".points") as HTMLElement;
     for (let i = 0; i < 90; i++) {
       let point = document.createElement("li");
       point.style.top = Math.random() * 100 + "%";
@@ -11,7 +11,7 @@ const Loader = () => {
       pointsContainer.appendChild(point);
     }
 
-    const circlesContainer = document.querySelector(".circles");
+    const circlesContainer = document.querySelector(".circles") as HTMLElement;
     for (let i = 1; i <= 5; i++) {
       let circle = document.createElement("div");
       circle.style.width = (i * 20) + "%";
