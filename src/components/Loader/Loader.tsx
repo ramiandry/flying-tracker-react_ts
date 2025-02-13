@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import './Loader.css'; // Assurez-vous d'avoir un fichier CSS pour les styles
 
 const Loader = () => {
