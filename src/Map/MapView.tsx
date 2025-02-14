@@ -4,6 +4,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css'; // Importez le CSS de Leaflet
 import airplane_icon from "../assets/avion.png"
 import Loader from '../components/Loader/Loader';
+import axios from 'axios';
+import { useSettings } from "../components/SettingsContext"; // Import du contexte
 
 // Icône d'avion personnalisée avec rotation
 const createAirplaneIcon = (angle: number) => {
@@ -29,40 +31,47 @@ interface Flight {
 const MapView: React.FC = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { urlMap } = useSettings(); // Récupérez l'URL de la carte à partir du contexte
+
+  const fetchFlights = async () => {
+    try {
+      const response = await axios.get('https://opensky-network.org/api/states/all');
+      const data = response.data;
+      const states = data.states
+        .map((state: any[]) => ({
+          icao24: state[0],
+          callsign: state[1],
+          origin_country: state[2],
+          longitude: state[5],
+          latitude: state[6],
+          baro_altitude: state[7],
+          velocity: state[9],
+          true_track: state[10], // Récupérez l'angle de cap
+        }))
+        .filter((flight: Flight) => flight.latitude !== null && flight.longitude !== null); // Filtrez les vols avec des positions valides
+      setFlights(states);
+    } catch (error) {
+      console.error('Error fetching flight data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchFlights = async () => {
-      try {
-        const response = await fetch('https://opensky-network.org/api/states/all');
-        const data = await response.json();
-        const states = data.states
-          .map((state: any[]) => ({
-            icao24: state[0],
-            callsign: state[1],
-            origin_country: state[2],
-            longitude: state[5],
-            latitude: state[6],
-            baro_altitude: state[7],
-            velocity: state[9],
-            true_track: state[10], // Récupérez l'angle de cap
-          }))
-          .filter((flight: Flight) => flight.latitude !== null && flight.longitude !== null); // Filtrez les vols avec des positions valides
-        setFlights(states);
-      } catch (error) {
-        console.error('Error fetching flight data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    // Initial fetch
     fetchFlights();
+
+    // Set up the interval to fetch data every 6 seconds
+    const intervalId = setInterval(fetchFlights, 6000);
+
+    // Clear the interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   if (loading) {
     return (
       <div className="loader-container">
-      <Loader/>
-
+        <Loader />
       </div>
     );
   }
@@ -70,7 +79,7 @@ const MapView: React.FC = () => {
   return (
     <MapContainer center={[51.505, -0.09]} zoom={6} style={{ height: '100vh', width: '100%' }}>
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url={urlMap} // Utilisez l'URL de la carte à partir du contexte
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       {flights.map((flight) => (
