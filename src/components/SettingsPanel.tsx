@@ -84,7 +84,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ isVisible, setIsVisible }
           </Box>
 
           {/* Onglets */}
-          <Tabs value={tab} onChange={(e, newValue) => setTab(newValue)} textColor="inherit">
+          <Tabs value={tab} onChange={(newValue) => setTab(newValue)} textColor="inherit">
             <Tab label="Map" />
             <Tab label="Visibility" />
             <Tab label="Misc" />
@@ -118,7 +118,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ isVisible, setIsVisible }
               </Typography>
               <Slider
                 value={brightness}
-                onChange={(e, newValue) => setBrightness(newValue as number)}
+                onChange={(newValue) => setBrightness(newValue as number)}
                 sx={{ color: "yellow" }}
               />
 
