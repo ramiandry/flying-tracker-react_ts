@@ -63,8 +63,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ isVisible, setIsVisible }
             color: "white",
             borderRadius: "10px",
             position: "absolute",
-            top: 40,
-            left: 40,
+            top: "5vh",
+            left: "3vw",
             zIndex: 99999,
             p: 2,
           }}

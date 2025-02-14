@@ -57,7 +57,7 @@ const MapView: React.FC = () => {
           flight.velocity > 100 // 🔥 Garde les avions à plus de 100 m/s (~360 km/h)
         );
 
-      //setFlights(states); // 🔥 Limite à 50 avions maximum
+      setFlights(states); // 🔥 Limite à 50 avions maximum
     } catch (error) {
       console.error("Error fetching flight data:", error);
     } finally {
@@ -81,7 +81,7 @@ const MapView: React.FC = () => {
   }
 
   return (
-    <MapContainer center={[48.8566, 2.3522]} zoom={5} style={{ height: "100vh", width: "100%" }}>
+    <MapContainer center={[48.8566, 2.3522]} zoom={5} minZoom={4} maxZoom={18} style={{ height: "100vh", width: "100%" }}>
       <TileLayer
         url={urlMap}
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
