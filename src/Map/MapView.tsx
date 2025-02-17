@@ -6,6 +6,8 @@ import airplane_icon from "../assets/avion.png";
 import Loader from "../components/Loader/Loader";
 import axios from "axios";
 import { useSettings } from "../components/SettingsContext";
+import { Box, Fab } from "@mui/material";
+import { Add, HorizontalRule } from "@mui/icons-material";
 
 // Icône d'avion personnalisée avec rotation
 const createAirplaneIcon = (angle: number) => {
@@ -36,7 +38,9 @@ const MapView: React.FC = () => {
 
   const fetchFlights = async () => {
     try {
-      const response = await axios.get("https://opensky-network.org/api/states/all");
+      const response = await axios.get(
+        "https://opensky-network.org/api/states/all"
+      );
       const data = response.data;
       const states = data.states
         .map((state: any[]) => ({
@@ -50,11 +54,14 @@ const MapView: React.FC = () => {
           true_track: state[10] || 0,
           on_ground: state[8],
         }))
-        .filter((flight: Flight) => 
-          flight.latitude !== null && flight.longitude !== null && // Exclure les valeurs nulles
-          flight.on_ground === false && // 🔥 Garde uniquement les avions en vol
-          flight.baro_altitude > 3000 && // 🔥 Filtre les avions volant au-dessus de 3000m
-          flight.velocity > 100 // 🔥 Garde les avions à plus de 100 m/s (~360 km/h)
+        .filter(
+          (flight: Flight) =>
+            flight.latitude !== null &&
+            flight.longitude !== null && // Exclure les valeurs nulles
+            flight.on_ground === false && // 🔥 Garde uniquement les avions en vol
+            flight.baro_altitude > 3000 && // 🔥 Filtre les avions volant au-dessus de 3000m
+            flight.velocity > 100 && // 🔥 Garde les avions à plus de 100 m/s (~360 km/h)
+            flight.origin_country === "France" // 🔥 Garde uniquement les avions français
         );
 
       setFlights(states); // 🔥 Limite à 50 avions maximum
@@ -81,29 +88,68 @@ const MapView: React.FC = () => {
   }
 
   return (
-    <MapContainer center={[48.8566, 2.3522]} zoom={5} minZoom={4} maxZoom={18} style={{ height: "100vh", width: "100%" }}>
-      <TileLayer
-        url={urlMap}
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {flights.map((flight) => (
-        <Marker
-          key={flight.icao24}
-          position={[flight.latitude, flight.longitude]}
-          icon={createAirplaneIcon(flight.true_track)}
-        >
-          <Popup>
-            <div>
-              <p><strong>Callsign:</strong> {flight.callsign}</p>
-              <p><strong>Origin Country:</strong> {flight.origin_country}</p>
-              <p><strong>Altitude:</strong> {flight.baro_altitude} m</p>
-              <p><strong>Velocity:</strong> {flight.velocity} m/s</p>
-              <p><strong>Direction:</strong> {flight.true_track}°</p>
-            </div>
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+    <>
+      <MapContainer
+        center={[48.8566, 2.3522]}
+        zoom={5}
+        zoomControl={false}
+        touchZoom={false}
+        minZoom={4}
+        maxZoom={18}
+        style={{ height: "100vh", width: "100%" }}
+      >
+        <TileLayer
+          url={urlMap}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {flights.map((flight) => (
+          <Marker
+            key={flight.icao24}
+            position={[flight.latitude, flight.longitude]}
+            icon={createAirplaneIcon(flight.true_track)}
+          >
+            <Popup>
+              <div>
+                <p>
+                  <strong>Callsign:</strong> {flight.callsign}
+                </p>
+                <p>
+                  <strong>Origin Country:</strong> {flight.origin_country}
+                </p>
+                <p>
+                  <strong>Altitude:</strong> {flight.baro_altitude} m
+                </p>
+                <p>
+                  <strong>Velocity:</strong> {flight.velocity} m/s
+                </p>
+                <p>
+                  <strong>Direction:</strong> {flight.true_track}°
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+      <Box
+        sx={{
+          "& > :not(style)": { m: 1 },
+          position: "absolute",
+          top: "100px",
+          right: "50px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent:"center",
+          alignItems: "center"
+        }}
+      >
+        <Fab size="medium" color="inherit" aria-label="Zoom in">
+          <Add />
+        </Fab>
+        <Fab size="small" color="inherit" aria-label="Zoom out">
+          <HorizontalRule />
+        </Fab>
+      </Box>
+    </>
   );
 };
 

@@ -1,0 +1,10 @@
+.css-15kfelq-MuiDivider-root::before, .css-15kfelq-MuiDivider-root::after {
+    width: 100%;
+  
+    border-top: thin solid rgb(255, 255, 255);
+  
+      border-top-style: solid;
+  
+    border-top-style: inherit;
+  
+  }

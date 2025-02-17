@@ -46,7 +46,7 @@ interface SettingsPanelProps {
   setIsVisible: (visible: boolean) => void;
 }
 
-const SettingsPanel: React.FC<SettingsPanelProps> = ({ isVisible, setIsVisible }) => {
+const SettingsPanel: React.FC<SettingsPanelProps> = ({ isVisible=false, setIsVisible }) => {
   const [tab, setTab] = useState(0);
   const [brightness, setBrightness] = useState(50);
   const [dayNight, setDayNight] = useState(true);
