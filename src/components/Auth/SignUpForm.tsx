@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, FormControlLabel, Checkbox, Typography, Divider, IconButton } from '@mui/material';
-import { Google as GoogleIcon, Facebook as FacebookIcon, Apple as AppleIcon, Close as CloseIcon } from '@mui/icons-material';
+import { Google as GoogleIcon,  Close as CloseIcon } from '@mui/icons-material';
 
 // Définir l'interface des props
 interface SignUpFormProps {

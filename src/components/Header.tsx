@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, InputBase, IconButton, Box, Button } from '@mui/material';
 import { Search as SearchIcon, AccountCircle as AccountCircleIcon } from '@mui/icons-material';
-import { styled, alpha, useTheme } from '@mui/system';
+import { styled, alpha} from '@mui/system';
 import logo from '../assets/images/logo.png';
 import LoginForm from './Auth/LoginForm';
 
@@ -37,7 +37,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),  // Utilisation de transitions pour la largeur
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       width: '12ch',
@@ -50,7 +49,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 // Composant Header
 const Header: React.FC = () => {
-  const theme = useTheme(); // Utilisation du hook useTheme
   const [currentTime, setCurrentTime] = useState<string>('');
   const [showLogin, setShowLogin] = useState(false);
   
