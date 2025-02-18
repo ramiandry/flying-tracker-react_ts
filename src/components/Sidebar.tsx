@@ -4,6 +4,10 @@ import { Menu as MenuIcon, Home as HomeIcon, Flight as FlightIcon, Map as MapIco
 
 const Sidebar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
+    // Fonction pour gérer le clic sur un élément de menu
+    const handleClick = () => {
+      console.log("Menu item clicked");
+    };
 
   // Fonction pour ouvrir/fermer la sidebar
   const toggleDrawer = () => {
@@ -62,19 +66,19 @@ const Sidebar: React.FC = () => {
         <Divider sx={{ borderColor: "#1e88e5" }} />
 
         <List>
-          <ListItem button>
+          <ListItem >
             <HomeIcon sx={{ color: "#1e88e5", marginRight: 2 }} />
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button>
+          <ListItem >
             <FlightIcon sx={{ color: "#1e88e5", marginRight: 2 }} />
             <ListItemText primary="Flights" />
           </ListItem>
-          <ListItem button>
+          <ListItem >
             <MapIcon sx={{ color: "#1e88e5", marginRight: 2 }} />
             <ListItemText primary="Map" />
           </ListItem>
-          <ListItem button>
+          <ListItem >
             <SettingsIcon sx={{ color: "#1e88e5", marginRight: 2 }} />
             <ListItemText primary="Settings" />
           </ListItem>
