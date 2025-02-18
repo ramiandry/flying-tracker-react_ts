@@ -4,7 +4,6 @@ import { Search as SearchIcon, AccountCircle as AccountCircleIcon } from '@mui/i
 import { styled, alpha} from '@mui/system';
 import logo from '../assets/images/logo.png';
 import LoginForm from './Auth/LoginForm';
-import Sidebar from './Sidebar';
 
 // Style pour la recherche
 const Search = styled('div')(({ theme }) => ({
@@ -49,7 +48,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 // Composant Header
-const Header: React.FC = () => {
+const Header_2: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [showLogin, setShowLogin] = useState(false);
   
@@ -76,10 +75,7 @@ const Header: React.FC = () => {
       }}
     >
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent:"center" }}>
-          <Box sx={{marginRight : 2}}>
-            <Sidebar/>
-          </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', marginRight: 2 }}>
             <img src={logo} width="50px" alt="" />
           </Typography>
@@ -112,4 +108,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default Header_2;

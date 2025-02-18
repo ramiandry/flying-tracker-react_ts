@@ -26,7 +26,7 @@ const Toolbar = () => {
         bottom: "20px",
         left: "50%",
         transform: "translateX(-50%)",
-        zIndex: 1000,
+        zIndex: 9999,
         boxShadow: 3,
         width: "auto",
         gap: 2,

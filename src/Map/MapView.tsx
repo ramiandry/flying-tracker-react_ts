@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -6,7 +6,7 @@ import airplane_icon from "../assets/avion.png";
 import Loader from "../components/Loader/Loader";
 import axios from "axios";
 import { useSettings } from "../components/SettingsContext";
-import { Box, Fab } from "@mui/material";
+import { Box, Fab, Typography } from "@mui/material";
 import { Add, HorizontalRule } from "@mui/icons-material";
 
 // Icône d'avion personnalisée avec rotation
@@ -35,6 +35,7 @@ const MapView: React.FC = () => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { urlMap } = useSettings();
+  const mapRef = useRef<any>(null); // Référence à la carte Leaflet
 
   const fetchFlights = async () => {
     try {
@@ -79,10 +80,35 @@ const MapView: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  const zoomIn = () => {
+    if (mapRef.current && mapRef.current.getZoom() < 15) {
+      mapRef.current.setZoom(mapRef.current.getZoom() + 1); // Appliquer zoom à la carte
+    }
+  };
+
+  const zoomOut = () => {
+    if (mapRef.current && mapRef.current.getZoom() > 4) {
+      mapRef.current.setZoom(mapRef.current.getZoom() - 1); // Appliquer zoom à la carte
+    }
+  };
+
   if (loading) {
     return (
-      <div className="loader-container">
-        <Loader />
+      <div
+        className="loader-container"
+        style={{
+          position: "absolute",
+          zIndex: 9999999,
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
+        <div style={{ width: "30vw" }}>
+          <Loader />
+          <Typography sx={{ fontSize: "3vw" }} position="fixed" bottom={2}>
+            FlyWatch by RAF
+          </Typography>
+        </div>
       </div>
     );
   }
@@ -95,12 +121,13 @@ const MapView: React.FC = () => {
         zoomControl={false}
         touchZoom={false}
         minZoom={4}
-        maxZoom={18}
+        maxZoom={15}
         style={{ height: "100vh", width: "100%" }}
+        ref={mapRef} // Référence à la carte Leaflet
       >
         <TileLayer
           url={urlMap}
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
         />
         {flights.map((flight) => (
           <Marker
@@ -138,14 +165,14 @@ const MapView: React.FC = () => {
           right: "50px",
           display: "flex",
           flexDirection: "column",
-          justifyContent:"center",
-          alignItems: "center"
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Fab size="medium" color="inherit" aria-label="Zoom in">
+        <Fab size="medium" color="inherit" aria-label="Zoom in" onClick={zoomIn}>
           <Add />
         </Fab>
-        <Fab size="small" color="inherit" aria-label="Zoom out">
+        <Fab size="small" color="inherit" aria-label="Zoom out" onClick={zoomOut}>
           <HorizontalRule />
         </Fab>
       </Box>

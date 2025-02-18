@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useGoogleLogin } from '@react-oauth/google';
 import { TextField, Button, Box, Checkbox, FormControlLabel, Typography, Divider, IconButton } from '@mui/material';
 import { Google as GoogleIcon, Close as CloseIcon } from '@mui/icons-material';
 import "./LoginForm.css";
@@ -19,6 +20,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ showLogin, setShowLogin }) => {
   const handleLogin = () => {
     console.log('Logging in with email:', email);
   };
+
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: tokenResponse =>{
+      
+      console.log(tokenResponse)
+    } ,
+  });
+
 
   return (
     <>
@@ -56,6 +66,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ showLogin, setShowLogin }) => {
             variant="contained"
             sx={{ marginBottom: 2, backgroundColor: '#db4437', color: 'white' }}
             startIcon={<GoogleIcon />}
+            onClick={()=>loginWithGoogle()}
           >
             Continue With Google
           </Button>

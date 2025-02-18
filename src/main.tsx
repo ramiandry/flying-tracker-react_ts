@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { SettingsProvider } from "./components/SettingsContext.tsx";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // Créez un thème personnalisé
 const theme = createTheme({
@@ -24,10 +25,12 @@ const theme = createTheme({
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <SettingsProvider>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </SettingsProvider>
+    <GoogleOAuthProvider clientId="681010265618-lk2n2lr84pq4l12rnopndkkfku0p4pc6.apps.googleusercontent.com">
+      <SettingsProvider>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </SettingsProvider>
+    </GoogleOAuthProvider>
   </StrictMode>
 );

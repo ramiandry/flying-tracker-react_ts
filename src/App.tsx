@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import Home from './Home/Home';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import Header from './components/Header';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import AircraftList from './Aircrafts/AircraftList';
 
 
 // @ts-ignore
@@ -19,11 +22,16 @@ L.Icon.Default.mergeOptions({
 
 function App() {
   return (
+    <>
+    <Header/>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/forgot_password" element={<ForgotPassword/>} />
+        <Route path="/Aircrafts" element={<AircraftList/>} />
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
 
