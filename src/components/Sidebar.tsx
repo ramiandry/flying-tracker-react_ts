@@ -4,10 +4,6 @@ import { Menu as MenuIcon, Home as HomeIcon, Flight as FlightIcon, Map as MapIco
 
 const Sidebar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-    // Fonction pour gérer le clic sur un élément de menu
-    const handleClick = () => {
-      console.log("Menu item clicked");
-    };
 
   // Fonction pour ouvrir/fermer la sidebar
   const toggleDrawer = () => {
